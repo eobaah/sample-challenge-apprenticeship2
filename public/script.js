@@ -1,1 +1,64 @@
-console.log('hello from the browser JavaScript')
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('hello from the browser JavaScript')
+
+  const checkStatus = (response) => {
+    if (response.status >= 200 && response.status < 300) {
+      return response
+    }
+    const error = new Error(response.statusText)
+    error.response = response
+    throw error
+  }
+
+  const signUpButton = document.querySelector('.sign-up-button')
+  const loggedOutButton = document.querySelector('.logged-out-button')
+
+  const signUpFunc = () => {
+    const name = document.querySelector('.name-sign-up').value
+    const email = document.querySelector('.email-sign-up').value
+    const password = document.querySelector('.password-sign-up').value
+    const url = '/sign-up'
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({name, email, password}),
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(checkStatus)
+      .then(response => response.json()).then((response) => {
+        console.log('response:', response)
+        window.location.pathname = response.REDIRECT_URL
+      })
+      .then(() => console.log('updated!!!'))
+  }
+
+  const logOutFunc = () => {
+    const url = '/logout'
+    fetch(url, {
+      method: 'DELETE',
+      credentials: 'include',
+    })
+      .then(checkStatus)
+      .then(response => response.json()).then((response) => {
+        console.log('response:', response)
+        window.location.pathname = response.REDIRECT_URL
+      })
+  }
+
+  if (signUpButton) {
+    signUpButton.addEventListener('click', (event) => {
+      event.preventDefault()
+      signUpFunc()
+    })
+  }
+
+  if (loggedOutButton) {
+    loggedOutButton.addEventListener('click', (event) => {
+      event.preventDefault()
+      logOutFunc()
+    })
+  }
+})

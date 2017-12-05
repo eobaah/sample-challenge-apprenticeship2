@@ -8,15 +8,23 @@ import {
 const router = express.Router()
 
 router.get('/', (req, res, next) => {
-  getAlbums()
-    .then(albums => res.render('albums/index', {albums}))
-    .catch(next)
+  if (res.locals.isLoggedIn) {
+    getAlbums()
+      .then(albums => res.render('albums/index', {albums}))
+      .catch(next)
+  } else {
+    res.send('/sign-in')
+  }
 })
 
 router.get('/:albumID', (req, res, next) => {
-  getAlbumById(req.params.albumID)
-    .then(album => res.render('albums/album', {album}))
-    .catch(next)
+  if (res.locals.isLoggedIn) {
+    getAlbumById(req.params.albumID)
+      .then(album => res.render('albums/album', {album}))
+      .catch(next)
+  } else {
+    res.send('/sign-in')
+  }
 })
 
 export default router
