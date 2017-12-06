@@ -25,12 +25,11 @@ router.post('/sign-up', (req, res, next) => {
     })
 })
 
-
 router.get('/sign-in', (req, res, next) => {
   if (res.locals.isLoggedIn) {
     res.redirect('/')
   } else {
-    res.render('authentication/sign-in')
+    res.render('authentication/sign-in', {error: null})
   }
 })
 
@@ -39,10 +38,15 @@ router.post('/sign-in', (req, res, next) => {
   signIn(email)
     .then((existingUser) => {
       if(!existingUser){
-        res.render('authentication/sign-in', {'error':'invalid username or password' })
+        res.json({error:'Invalid username or password' })
+      } else {
+        if(password === existingUser.encrypted_password){
+          req.session.user = existingUser
+          res.json({REDIRECT_URL: '/'})
+        } else {
+          res.json({error:'Invalid username or password' })
+        }
       }
-      req.session.user = newUser
-      res.json({REDIRECT_URL: '/'})
     })
 })
 

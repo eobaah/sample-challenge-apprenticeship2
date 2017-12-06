@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
       .then(albums => res.render('albums/index', {albums}))
       .catch(next)
   } else {
-    res.send('/sign-in')
+    res.render('authentication/sign-in', {error: null})
   }
 })
 
@@ -23,7 +23,7 @@ router.get('/:albumID', (req, res, next) => {
       .then(album => res.render('albums/album', {album}))
       .catch(next)
   } else {
-    res.send('/sign-in')
+    res.render('authentication/sign-in', {error: null})
   }
 })
 
