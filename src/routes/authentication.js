@@ -17,11 +17,12 @@ router.get('/sign-up', (req, res, next) => {
 })
 
 router.post('/sign-up', (req, res, next) => {
+  const {redirect} = req.query
   const {name, email, password} = req.body
   signUp(name, email, password)
     .then((newUser) => {
       req.session.user = newUser
-      res.json({REDIRECT_URL: '/'})
+      res.json({REDIRECT_URL: `/${redirect || ''}`})
     })
 })
 
@@ -34,18 +35,17 @@ router.get('/sign-in', (req, res, next) => {
 })
 
 router.post('/sign-in', (req, res, next) => {
+  const {redirect} = req.query
   const {email, password} = req.body
   signIn(email)
     .then((existingUser) => {
-      if(!existingUser){
-        res.json({error:'Invalid username or password' })
+      if (!existingUser) {
+        res.json({error: 'Invalid username or password'})
+      } else if (password === existingUser.encrypted_password) {
+        req.session.user = existingUser
+        res.json({REDIRECT_URL: `/${redirect || ''}`})
       } else {
-        if(password === existingUser.encrypted_password){
-          req.session.user = existingUser
-          res.json({REDIRECT_URL: '/'})
-        } else {
-          res.json({error:'Invalid username or password' })
-        }
+        res.json({error: 'Invalid username or password'})
       }
     })
 })

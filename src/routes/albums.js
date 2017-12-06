@@ -8,12 +8,13 @@ import {
 const router = express.Router()
 
 router.get('/', (req, res, next) => {
+  console.log("res.locals.isloggedIn:", res.locals )
   if (res.locals.isLoggedIn) {
     getAlbums()
       .then(albums => res.render('albums/index', {albums}))
       .catch(next)
   } else {
-    res.render('authentication/sign-in', {error: null})
+    res.redirect('/sign-in?redirect=albums')
   }
 })
 
@@ -23,7 +24,7 @@ router.get('/:albumID', (req, res, next) => {
       .then(album => res.render('albums/album', {album}))
       .catch(next)
   } else {
-    res.render('authentication/sign-in', {error: null})
+    res.redirect('/sign-in?redirect=albums/'+req.params.albumID)
   }
 })
 

@@ -11,6 +11,7 @@ export function start() { // eslint-disable-line import/prefer-default-export
 
   const app = express()
 
+  app.disable('etag');
   app.set('view engine', 'ejs')
   app.set('views', path.join(__dirname, 'views'))
 
