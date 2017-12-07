@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('hello from the browser JavaScript')
 
   const checkStatus = (response) => {
-    console.log( "======> ", response )
     if (response.status >= 200 && response.status < 300) {
       return response
     }
@@ -19,8 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const name = document.querySelector('.name-sign-up').value
     const email = document.querySelector('.email-sign-up').value
     const password = document.querySelector('.password-sign-up').value
-    const url = `/sign-up?${window.location.href.split('?')[1]}`
-    console.log(document.cookie)
+    const redirectQuery = window.location.href.split('?')[1]
+    const url = `/sign-up?${redirectQuery}`
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({name, email, password}),
@@ -33,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(checkStatus)
       .then(response => response.json())
       .then((response) => {
-        console.log('response:', response)
         window.location.pathname = response.REDIRECT_URL
       })
       .catch(console.log)
@@ -42,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const signInFunc = () => {
     const email = document.querySelector('.email-sign-in').value
     const password = document.querySelector('.password-sign-in').value
-    const url = `/sign-in?${window.location.href.split('?')[1]}`
+    const redirectQuery = window.location.href.split('?')[1]
+    const url = `/sign-in?${redirectQuery}`
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({email, password}),
@@ -55,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(checkStatus)
       .then(response => response.json())
       .then((response) => {
-        console.log('response:', response)
         if (response.REDIRECT_URL !== undefined) {
           window.location.pathname = response.REDIRECT_URL
         } else if (response.error) {
@@ -75,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(checkStatus)
     .then(response => response.json())
     .then((response) => {
-      console.log('response:', response)
       window.location.pathname = response.REDIRECT_URL
     })
     .catch(console.log)

@@ -7,7 +7,7 @@ CREATE TABLE albums (
 CREATE TABLE members (
   id SERIAL,
   name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL UNIQUE,
+  email VARCHAR(255) UNIQUE NOT NULL,
   encrypted_password VARCHAR(255) NOT NULL
 );
 
