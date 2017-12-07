@@ -28,7 +28,7 @@ router.get("/users/:id/edit", (req, res, next) => {
   }
 })
 
-router.put("/users/:id/edit", (req, res, next) => {
+router.put("/users/:id", (req, res, next) => {
   const {name, email} = req.body
   const member = req.params.id;
   updateById(name, email, member)

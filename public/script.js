@@ -66,13 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const editProfileFunc = () => {
     const member = document.querySelector('.member-id').value
-    console.log("member.....", member);
     const name = document.querySelector('.member-name').value
-    console.log("name.....", name);
     const email = document.querySelector('.member-email').value
-    console.log("email.....", email);
     const redirectQuery = window.location.href.split('?')[1]
-    const url = `/users/${member}/edit?${redirectQuery}}`
+    const url = `/users/${member}?${redirectQuery}}`
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({name, email}),
