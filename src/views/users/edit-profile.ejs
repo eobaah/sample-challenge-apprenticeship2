@@ -1,0 +1,16 @@
+<% include ../partials/header %>
+
+<h1>Edit Profile</h1>
+
+
+<label for=""><b>Name:</b></label>
+<input class="member-name" type="text" name="name" value="<%= member.name %>">
+<br>
+<label for="email"><b>Email:</b></label>
+<input class="member-email" type="email" name="email" value="<%= member.email %>">
+<br>
+<input class="member-id" type="hidden" name="id" value="<%= member.id %>">
+<button class="edit-profile-button" type="submit" name="edit-profile-button">Submit</button>
+
+
+<% include ../partials/footer %>

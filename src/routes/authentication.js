@@ -18,10 +18,8 @@ router.get('/sign-up', (req, res, next) => {
 
 router.post('/sign-up', (req, res, next) => {
   const {redirect} = req.query
-  console.log("req.body....", req.body);
   signUp(req.body)
     .then((newUser) => {
-      console.log("newUser", newUser);
       req.session.user = newUser
       res.json({REDIRECT_URL: `/${redirect || ''}`})
     })

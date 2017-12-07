@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const signUpButton = document.querySelector('.sign-up-button')
   const signInButton = document.querySelector('.sign-in-button')
   const loggedOutButton = document.querySelector('.logged-out-button')
+  const editProfileButton = document.querySelector('.edit-profile-button')
 
   const signUpFunc = () => {
     const name = document.querySelector('.name-sign-up').value
@@ -45,6 +46,36 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({email, password}),
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(checkStatus)
+      .then(response => response.json())
+      .then((response) => {
+        if (response.REDIRECT_URL !== undefined) {
+          window.location.pathname = response.REDIRECT_URL
+        } else if (response.error) {
+          document.querySelector('.error').innerText = response.error
+        }
+      })
+      .catch(console.log)
+  }
+
+  const editProfileFunc = () => {
+    const member = document.querySelector('.member-id').value
+    console.log("member.....", member);
+    const name = document.querySelector('.member-name').value
+    console.log("name.....", name);
+    const email = document.querySelector('.member-email').value
+    console.log("email.....", email);
+    const redirectQuery = window.location.href.split('?')[1]
+    const url = `/users/${member}/edit?${redirectQuery}}`
+    fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify({name, email}),
       credentials: 'include',
       headers: {
         Accept: 'application/json',
@@ -96,6 +127,13 @@ document.addEventListener('DOMContentLoaded', () => {
     loggedOutButton.addEventListener('click', (event) => {
       event.preventDefault()
       logOutFunc()
+    })
+  }
+
+  if (editProfileButton) {
+    editProfileButton.addEventListener('click', (event) => {
+      event.preventDefault()
+      editProfileFunc()
     })
   }
 })
