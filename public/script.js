@@ -15,10 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const loggedOutButton = document.querySelector('.logged-out-button')
   const editProfileButton = document.querySelector('.edit-profile-button')
 
+  function getElementValue(className) {
+    return document.querySelector(className).value
+  }
+
   const signUpFunc = () => {
-    const name = document.querySelector('.name-sign-up').value
-    const email = document.querySelector('.email-sign-up').value
-    const password = document.querySelector('.password-sign-up').value
+    const name = getElementValue('.name-sign-up')
+    const email = getElementValue('.email-sign-up')
+    const password = getElementValue('.password-sign-up')
     const redirectQuery = window.location.href.split('?')[1]
     const url = `/sign-up?${redirectQuery}`
     fetch(url, {
@@ -39,8 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const signInFunc = () => {
-    const email = document.querySelector('.email-sign-in').value
-    const password = document.querySelector('.password-sign-in').value
+    const email = getElementValue('.email-sign-in')
+    console.log("values....", email);
+    const password = getElementValue('.password-sign-in')
+    console.log("values....", password);
     const redirectQuery = window.location.href.split('?')[1]
     const url = `/sign-in?${redirectQuery}`
     fetch(url, {
@@ -64,10 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(console.log)
   }
 
+
   const editProfileFunc = () => {
-    const member = document.querySelector('.member-id').value
-    const name = document.querySelector('.member-name').value
-    const email = document.querySelector('.member-email').value
+    const member = getElementValue('.member-id')
+    const name = getElementValue('.member-name')
+    const email = getElementValue('.member-email')
     const redirectQuery = window.location.href.split('?')[1]
     const url = `/users/${member}?${redirectQuery}}`
     fetch(url, {
@@ -106,31 +113,17 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(console.log)
 }
 
-  if (signUpButton) {
-    signUpButton.addEventListener('click', (event) => {
-      event.preventDefault()
-      signUpFunc()
-    })
-  }
+  addEvent(editProfileButton, editProfileFunc)
+  addEvent(loggedOutButton, logOutFunc)
+  addEvent(signInButton, signInFunc)
+  addEvent(signUpButton, signUpFunc)
 
-  if (signInButton) {
-    signInButton.addEventListener('click', (event) => {
-      event.preventDefault()
-      signInFunc()
-    })
-  }
-
-  if (loggedOutButton) {
-    loggedOutButton.addEventListener('click', (event) => {
-      event.preventDefault()
-      logOutFunc()
-    })
-  }
-
-  if (editProfileButton) {
-    editProfileButton.addEventListener('click', (event) => {
-      event.preventDefault()
-      editProfileFunc()
-    })
+  function addEvent(btn, func) {
+    if (btn) {
+      btn.addEventListener('click', (event) => {
+        event.preventDefault()
+        func()
+      })
+    }
   }
 })
